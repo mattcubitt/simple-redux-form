@@ -37,6 +37,14 @@ var validate = values => {
     return errors;
 };
 
+const asyncValidate = (values, dispatch) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            reject({email: 'Email exists', _error: 'Sign up failed!'});
+        }, 1000);
+    });
+};
+
 var SignUpForm = React.createClass({
     render() {
         const {fields: {firstName, lastName, email}, handleSubmit, submitting} = this.props;
@@ -66,6 +74,8 @@ var SignUpForm = React.createClass({
 var SignUpFormContainer = ReduxForm.reduxForm({
     form: 'signUpForm',
     fields: ['firstName', 'lastName', 'email'],
+    asyncValidate,
+    asyncBlurFields: ['email'],
     validate
 })(SignUpForm);
 
